@@ -352,6 +352,13 @@ if(LAMMPS_EXCEPTIONS)
   target_compile_definitions(lammps PUBLIC -DLAMMPS_EXCEPTIONS)
 endif()
 
+# ML-MACE needs Torch
+if (PKG_ML-MACE)
+  find_package(Torch REQUIRED)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
+  target_link_libraries(lammps PUBLIC "${TORCH_LIBRARIES}")
+endif()
+
 # "hard" dependencies between packages resulting
 # in an error instead of skipping over files
 pkg_depends(ML-IAP ML-SNAP)
