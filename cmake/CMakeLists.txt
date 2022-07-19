@@ -127,7 +127,8 @@ endif()
 if(CMAKE_CXX_STANDARD LESS 11)
   message(FATAL_ERROR "C++ standard must be set to at least 11")
 endif()
-if(PKG_KOKKOS AND (CMAKE_CXX_STANDARD LESS 14))
+if((PKG_KOKKOS OR PKG_ML-MACE) AND (CMAKE_CXX_STANDARD LESS 14))
+  # KOKKOS & MACE (through Torch) needs C++14
   set(CMAKE_CXX_STANDARD 14)
 endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -354,6 +355,7 @@ endif()
 
 # ML-MACE needs Torch
 if (PKG_ML-MACE)
+  set(CMAKE_CXX_STANDARD 14)
   find_package(Torch REQUIRED)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
   target_link_libraries(lammps PUBLIC "${TORCH_LIBRARIES}")
